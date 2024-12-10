@@ -29,14 +29,20 @@ export default class Person {
         public surname: string,
         public parentId: string | null,
         public orderId: number,
+        public dateStart: string,
+        public dateEnd: string,
+        public description: string,
     ) { }
 
     static fromJson(data: any) {
         return new Person(
             data['name'],
             data['surname'],
-            data['parentId'],
+            data['parentId'] ?? null,
             data['orderId'] ?? 0,
+            data['dateStart'] ?? '',
+            data['dateEnd'] ?? '',
+            data['description'] ?? '',
         );
     }
 }

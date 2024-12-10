@@ -73,3 +73,8 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+.thick-path {
+  stroke-width: 3px;
+  stroke: black;
+}

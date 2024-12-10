@@ -1,9 +1,9 @@
 {
-  "name": "vite-project",
+  "name": "drzewinscy-page",
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://patrol16d.github.io/gry_od_patryka_web",
+  "homepage": "https://drzewinscy.github.io/",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",

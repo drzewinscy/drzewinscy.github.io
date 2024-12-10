@@ -4,17 +4,20 @@ import FamilyTree from './pages/FamilyTree'
 
 function App() {
   return (
-    <div>
+    <div style={{
+      display: 'flex',
+      flex: 1,
+      flexDirection: 'column',
+      height: '100%',
+    }}>
       <nav style={{ display: 'flex', justifyContent: 'space-evenly' }}>
         <Link to="/">Strona Główna</Link>
         <Link to="/tree">Drzewo Genealogiczne</Link>
       </nav>
-      <div>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/tree" element={<FamilyTree />} />
-        </Routes>
-      </div>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/tree" element={<FamilyTree />} />
+      </Routes>
     </div>
   )
 }

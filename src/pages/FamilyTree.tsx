@@ -16,10 +16,10 @@ const FamilyTree: React.FC = () => {
     }, [])
 
     return (
-        <div>
+        <>
             <h3 style={{ margin: 0 }}>Drzewo Genealogiczne</h3>
             {people ? <TreeComponent people={people} /> : null}
-        </div>
+        </>
     )
 }
 

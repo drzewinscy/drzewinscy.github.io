@@ -73,7 +73,12 @@ const TreeComponent: React.FC<TreeProps> = ({ people }) => {
                 'surname': parentSurname,
                 'orderId': Math.floor(Math.random() * 1000),
             },
-            [`${childId}/parentId`]: newKey,
+            [childId]: {
+                'name': people.data[childId].name,
+                'surname': people.data[childId].surname,
+                'orderId': people.data[childId].orderId,
+                'parentId': newKey
+            },
         });
     }
 
@@ -119,7 +124,7 @@ const TreeComponent: React.FC<TreeProps> = ({ people }) => {
             }
         }
 
-        return (<g><foreignObject width={130} height={62} x={-64} y={-30}>
+        return (<g><foreignObject width={130} height={70} x={-64} y={-30}>
             <div style={{
                 backgroundColor: '#ccc',
                 border: '1px solid gray',
@@ -221,10 +226,10 @@ const TreeComponent: React.FC<TreeProps> = ({ people }) => {
     return (
         <div ref={treeContainer} id="treeWrapper" onMouseMove={handleMouseMove} style={{
             width: '100%',
-            height: '600px',
-            overflow: 'auto',
+            display: 'flex',
             backgroundColor: '#fff1',
-            position: 'relative'
+            position: 'relative',
+            flex: 1,
         }}>
             {treeData && (
                 <Tree

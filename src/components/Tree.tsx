@@ -24,29 +24,23 @@ const TreeComponent: React.FC<TreeProps> = ({ people }) => {
     const [hoveredEdge, setHoveredEdge] = useState<HoveredEdge | null>(null);
     const [hoveredPerson, setHoveredPerson] = useState<string | null>(null);
     const [mousePos, setMousePos] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+    const [showWomans, setShowWomans] = useState(true);
 
     function buildNode(personId: string): TreeNode {
         const person = people.data[personId];
         const node: TreeNode = { personId: personId };
         if (person.children && person.children.length > 0) {
-            node.children = person.children.map(childId => buildNode(childId));
+            node.children = person.children.filter(c => !people.data[c].name.endsWith('a') || showWomans).map(childId => buildNode(childId));
         }
         return node;
     }
 
     function rebuildTree(peopleData: People) {
-        if (peopleData.roots.length === 1) {
-            const rootNode = buildNode(peopleData.roots[0]);
-            setTreeData(rootNode);
-        } else if (peopleData.roots.length > 1) {
-            const rootNodes = peopleData.roots.map(rootId => buildNode(rootId));
-            setTreeData(rootNodes);
-        } else {
-            setTreeData(null);
-        }
+        const rootNodes = peopleData.roots.map(rootId => buildNode(rootId));
+        setTreeData(rootNodes);
     }
 
-    useEffect(() => { rebuildTree(people); }, [people]);
+    useEffect(() => { rebuildTree(people); }, [people, showWomans]);
 
     function handleAddChild(parentId: string) {
         const childName = prompt("Podaj imię dziecka:");
@@ -201,7 +195,7 @@ const TreeComponent: React.FC<TreeProps> = ({ people }) => {
             </div>;
         }
 
-        return (<g><foreignObject width={130} height={80} x={-64} y={-30}>
+        return (<g><foreignObject width={130} height={80} x={-64} y={-45}>
             <div onMouseEnter={() => setHoveredPerson(personId)} onMouseLeave={() => setHoveredPerson(null)} style={{
                 backgroundColor: '#ccc',
                 border: '1px solid gray',
@@ -303,6 +297,19 @@ const TreeComponent: React.FC<TreeProps> = ({ people }) => {
                     {people.data[hoveredPerson].description}
                 </div>
             )}
+            {
+                <div style={{
+                    position: 'absolute',
+                    top: 5,
+                    right: 5,
+                }}>
+                    Pokaż kobiety
+                    <input
+                        type='checkbox'
+                        checked={showWomans}
+                        onChange={() => setShowWomans(!showWomans)} />
+                </div>
+            }
         </div>
     );
 }

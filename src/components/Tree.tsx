@@ -25,6 +25,7 @@ const TreeComponent: React.FC<TreeProps> = ({ people }) => {
     const [hoveredPerson, setHoveredPerson] = useState<string | null>(null);
     const [mousePos, setMousePos] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
     const [showWomans, setShowWomans] = useState(true);
+    const [orientation, setOrientation] = useState(true);
 
     function buildNode(personId: string): TreeNode {
         const person = people.data[personId];
@@ -43,11 +44,11 @@ const TreeComponent: React.FC<TreeProps> = ({ people }) => {
     useEffect(() => { rebuildTree(people); }, [people, showWomans]);
 
     function handleAddChild(parentId: string) {
-        const childName = prompt("Podaj imię dziecka:");
+        const childName = prompt('Podaj imię dziecka:');
         if (!childName) return;
-        const childSurname = prompt("Podaj nazwisko dziecka:");
-        const childDateStart = prompt("Podaj datę urodzenia (może być pusta):");
-        const childDateEnd = prompt("Podaj datę zgonu (może być pusta):");
+        const childSurname = prompt('Podaj nazwisko dziecka:');
+        const childDateStart = prompt('Podaj datę urodzenia (może być pusta):');
+        const childDateEnd = prompt('Podaj datę zgonu (może być pusta):');
 
         set(`/people/child_${Date.now()}`, {
             'name': childName,
@@ -61,11 +62,11 @@ const TreeComponent: React.FC<TreeProps> = ({ people }) => {
 
     function handleAddParent(childId: string) {
         const person = people.data[childId];
-        const parentName = prompt("Podaj imię rodzica:");
+        const parentName = prompt('Podaj imię rodzica:');
         if (!parentName) return;
-        const parentSurname = prompt("Podaj nazwisko rodzica:");
-        const parentDateStart = prompt("Podaj datę urodzenia (może być pusta):");
-        const parentDateEnd = prompt("Podaj datę zgonu (może być pusta):");
+        const parentSurname = prompt('Podaj nazwisko rodzica:');
+        const parentDateStart = prompt('Podaj datę urodzenia (może być pusta):');
+        const parentDateEnd = prompt('Podaj datę zgonu (może być pusta):');
 
         const newKey = `parent_${Date.now()}`;
 
@@ -85,13 +86,13 @@ const TreeComponent: React.FC<TreeProps> = ({ people }) => {
 
     function handleEditPerson(personId: string) {
         const person = people.data[personId];
-        const newName = prompt("Nowe imię:", person.name);
+        const newName = prompt('Nowe imię:', person.name);
         if (!newName) return;
         person.name = newName;
-        person.surname = prompt("Nowe nazwisko:", person.surname) ?? person.surname;
-        person.dateStart = prompt("Podaj datę urodzenia (może być pusta):", person.dateStart) ?? person.dateStart;
-        person.dateEnd = prompt("Podaj datę zgonu (może być pusta):", person.dateEnd) ?? person.dateEnd;
-        person.description = prompt("Podaj opis (może być pusty):", person.description) ?? person.description;
+        person.surname = prompt('Nowe nazwisko:', person.surname) ?? person.surname;
+        person.dateStart = prompt('Podaj datę urodzenia (może być pusta):', person.dateStart) ?? person.dateStart;
+        person.dateEnd = prompt('Podaj datę zgonu (może być pusta):', person.dateEnd) ?? person.dateEnd;
+        person.description = prompt('Podaj opis (może być pusty):', person.description) ?? person.description;
 
         update(`/people/`, {
             [personId]: { ...person },
@@ -237,7 +238,7 @@ const TreeComponent: React.FC<TreeProps> = ({ people }) => {
     }
 
     return (
-        <div ref={treeContainer} id="treeWrapper" onMouseMove={handleMouseMove} style={{
+        <div ref={treeContainer} id='treeWrapper' onMouseMove={handleMouseMove} style={{
             width: '100%',
             display: 'flex',
             backgroundColor: '#fff1',
@@ -247,9 +248,9 @@ const TreeComponent: React.FC<TreeProps> = ({ people }) => {
             {treeData && (
                 <Tree
                     data={treeData as any}
-                    orientation="vertical"
+                    orientation={orientation ? 'vertical' : 'horizontal'}
                     translate={{ x: (document.getElementById('root')?.clientWidth ?? 200) / 2, y: 100 }}
-                    pathFunc="diagonal"
+                    pathFunc='diagonal'
                     zoomable={true}
                     renderCustomNodeElement={renderCustomNode}
                     separation={{
@@ -302,12 +303,24 @@ const TreeComponent: React.FC<TreeProps> = ({ people }) => {
                     position: 'absolute',
                     top: 5,
                     right: 5,
+                    display: 'flex',
+                    alignItems: 'flex-end',
+                    flexDirection: 'column',
                 }}>
-                    Pokaż kobiety
-                    <input
-                        type='checkbox'
-                        checked={showWomans}
-                        onChange={() => setShowWomans(!showWomans)} />
+                    <div>
+                        Orientacja
+                        <input
+                            type='checkbox'
+                            checked={orientation}
+                            onChange={() => setOrientation(!orientation)} />
+                    </div>
+                    <div>
+                        Pokaż kobiety
+                        <input
+                            type='checkbox'
+                            checked={showWomans}
+                            onChange={() => setShowWomans(!showWomans)} />
+                    </div>
                 </div>
             }
         </div>
